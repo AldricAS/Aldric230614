@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sign Up / Sign In</title>
   <link rel="stylesheet" href="login.css"> <!-- Memanggil file CSS terpisah -->
+  <!-- Memasukkan Google Sign-In API -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
 
@@ -23,12 +25,26 @@
       <button type="submit" class="btn" id="submit-btn">Sign Up</button>
     </form>
 
+    <!-- Tombol Google Sign-In -->
+    <div id="g_id_onload"
+         data-client_id="569269369702-br90p14feinv2qiiu3sa5t6d3qg7sb3r.apps.googleusercontent.com"
+         data-context="signin"
+         data-callback="onSignIn"
+         data-auto_prompt="false">
+    </div>
+    <div class="g_id_signin" data-type="standard"></div>
+
     <div class="link">
       <p>Already have an account? <a href="#" id="switch-to-signin">Sign In</a></p>
     </div>
   </div>
 
   <script>
+    // Cek jika pengguna sudah login
+    if (localStorage.getItem('isLoggedIn') === 'true') {
+      window.location.href = 'sudah login.html'; // Langsung arahkan ke halaman sudah login jika sudah login
+    }
+
     const formTitle = document.getElementById("form-title");
     const submitBtn = document.getElementById("submit-btn");
     const authForm = document.getElementById("auth-form-content");
@@ -45,21 +61,6 @@
       authForm.reset();
       submitBtn.removeEventListener("click", handleSignup);
       submitBtn.addEventListener("click", handleSignin);
-
-      // Ganti teks ke Sign Up
-      document.querySelector(".link p").innerHTML = "Don't have an account? <a href='#' id='switch-to-signup'>Sign Up</a>";
-      const switchToSignup = document.getElementById("switch-to-signup");
-      switchToSignup.addEventListener("click", (e) => {
-        e.preventDefault();
-        formTitle.textContent = "Sign Up";
-        submitBtn.textContent = "Sign Up";
-        authForm.reset();
-        submitBtn.addEventListener("click", handleSignup);
-        submitBtn.removeEventListener("click", handleSignin);
-
-        // Ganti teks kembali ke Sign In
-        document.querySelector(".link p").innerHTML = "Already have an account? <a href='#' id='switch-to-signin'>Sign In</a>";
-      });
     });
 
     // Fungsi untuk proses Sign Up
@@ -70,9 +71,10 @@
 
       // Simpan data pengguna ke localStorage
       localStorage.setItem('userData', JSON.stringify({ email, password }));
+      localStorage.setItem('isLoggedIn', 'true'); // Tandai bahwa pengguna sudah login
 
       alert("Sign Up successful!");
-      switchToSignin.click();
+      window.location.href = 'sudah login.html'; // Arahkan ke halaman sudah login setelah sign-up berhasil
     }
 
     // Fungsi untuk proses Sign In
@@ -84,10 +86,19 @@
       // Pastikan email dan password yang dimasukkan cocok dengan data yang disimpan
       if (email === userData.email && password === userData.password) {
         alert("Sign In successful!");
-        window.location.href = 'sudah login.html'; // Arahkan ke halaman sudah login.html setelah login berhasil
+        localStorage.setItem('isLoggedIn', 'true'); // Tandai bahwa pengguna sudah login
+        window.location.href = 'sudah login.html'; // Arahkan ke halaman sudah login setelah login berhasil
       } else {
         alert("Invalid email or password. Please try again.");
       }
+    }
+
+    // Fungsi Google Sign-In Callback
+    function onSignIn(response) {
+      console.log(response);
+      localStorage.setItem('isLoggedIn', 'true'); // Tandai bahwa pengguna sudah login dengan Google
+      alert("Google Sign-In successful!");
+      window.location.href = 'sudah login.html'; // Arahkan ke halaman sudah login setelah login berhasil
     }
 
     // Set event listener untuk handle signup
