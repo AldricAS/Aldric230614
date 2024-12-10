@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up / Sign In</title>
+  <style>
+    /* CSS tetap sama seperti sebelumnya */
+  </style>
+</head>
+<body>
+
+  <div class="container" id="auth-form">
+    <h2 id="form-title">Sign Up</h2>
+
+    <form id="auth-form-content">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required>
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required>
+      </div>
+      <button type="submit" class="btn" id="submit-btn">Sign Up</button>
+    </form>
+
+    <div class="link">
+      <p>Already have an account? <a href="#" id="switch-to-signin">Sign In</a></p>
+    </div>
+  </div>
+
+  <script>
+    const formTitle = document.getElementById("form-title");
+    const submitBtn = document.getElementById("submit-btn");
+    const authForm = document.getElementById("auth-form-content");
+    const switchToSignin = document.getElementById("switch-to-signin");
+
+    // Cek jika data pengguna sudah ada di localStorage
+    const userData = JSON.parse(localStorage.getItem('userData')) || { email: '', password: '' };
+
+    switchToSignin.addEventListener("click", (e) => {
+      e.preventDefault();
+      formTitle.textContent = "Sign In";
+      submitBtn.textContent = "Sign In";
+      authForm.reset();
+      submitBtn.addEventListener("click", handleSignin);
+      submitBtn.removeEventListener("click", handleSignup);
+      // Ganti teks ke Sign Up
+      document.querySelector(".link p").innerHTML = "Don't have an account? <a href='#' id='switch-to-signup'>Sign Up</a>";
+      const switchToSignup = document.getElementById("switch-to-signup");
+      switchToSignup.addEventListener("click", (e) => {
+        e.preventDefault();
+        formTitle.textContent = "Sign Up";
+        submitBtn.textContent = "Sign Up";
+        authForm.reset();
+        submitBtn.addEventListener("click", handleSignup);
+        submitBtn.removeEventListener("click", handleSignin);
+        // Ganti teks kembali ke Sign In
+        document.querySelector(".link p").innerHTML = "Already have an account? <a href='#' id='switch-to-signin'>Sign In</a>";
+      });
+    });
+
+    function handleSignup(event) {
+      event.preventDefault();
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      // Simpan data pengguna ke localStorage
+      localStorage.setItem('userData', JSON.stringify({ email, password }));
+
+      alert("Sign Up successful!");
+      switchToSignin.click();
+    }
+
+    function handleSignin(event) {
+      event.preventDefault();
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      // Pastikan email dan password yang dimasukkan cocok dengan data yang disimpan
+      if (email === userData.email && password === userData.password) {
+        alert("Sign In successful!");
+        window.location.href = 'sudah login.html'; // Arahkan ke index.html setelah login berhasil
+      } else {
+        alert("Invalid email or password. Please try again.");
+      }
+    }
+
+    submitBtn.addEventListener("click", handleSignup);
+  </script>
+
+</body>
+</html>
