@@ -4,10 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sign Up / Sign In</title>
-  <link rel="stylesheet" href="login.css"> <!-- Memanggil file CSS terpisah -->
-  
-  <!-- Memasukkan Google Sign-In API -->
-  <script src="https://apis.google.com/js/platform.js" async defer></script>
+  <link rel="stylesheet" href="login.css"> <meta name="google-signin-client_id" content="YOUR_CLIENT_ID"> <script src="https://apis.google.com/js/platform.js" async defer></script>
 </head>
 <body>
 
@@ -26,10 +23,9 @@
       <button type="submit" class="btn" id="submit-btn">Sign Up</button>
     </form>
 
-    <div class="g-signin2" data-onsuccess="onSignIn" data-clientid="569269369702-br90p14feinv2qiiu3sa5t6d3qg7sb3r.apps.googleusercontent.com" style="margin-top: 20px;"></div> <!-- Tombol Google Sign-In -->
-
     <div class="link">
       <p>Already have an account? <a href="#" id="switch-to-signin">Sign In</a></p>
+      <div id="g_id_signin" class="g-signin2" data-onsuccess="onSignIn"></div>
     </div>
   </div>
 
@@ -77,7 +73,7 @@
       localStorage.setItem('userData', JSON.stringify({ email, password }));
 
       alert("Sign Up successful!");
-      switchToSignin.click(); // Setelah sign up, pindah ke Sign In
+      switchToSignin.click();
     }
 
     // Fungsi untuk proses Sign In
@@ -95,20 +91,4 @@
       }
     }
 
-    // Fungsi Google Sign-In Callback
-    function onSignIn(googleUser) {
-      var profile = googleUser.getBasicProfile();
-      var email = profile.getEmail();
-      
-      // Menyimpan status login dengan akun Google
-      localStorage.setItem('userData', JSON.stringify({ email, password: 'google_login' })); // Menggunakan ID sebagai password sementara
-      alert("Google Sign-In successful!");
-      window.location.href = 'sudah login.html'; // Arahkan ke halaman sudah login.html setelah login berhasil
-    }
-
-    // Set event listener untuk handle signup
-    submitBtn.addEventListener("click", handleSignup);
-  </script>
-
-</body>
-</html>
+    // Fungsi untuk proses login dengan
