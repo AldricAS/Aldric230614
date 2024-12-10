@@ -25,7 +25,7 @@
       <button type="submit" class="btn" id="submit-btn">Sign Up</button>
     </form>
 
-    <!-- Tombol Google Sign-In -->
+    <!-- Tombol Google Sign-In (pindah ke bawah) -->
     <div id="g_id_onload"
          data-client_id="569269369702-br90p14feinv2qiiu3sa5t6d3qg7sb3r.apps.googleusercontent.com"
          data-context="signin"
@@ -86,10 +86,16 @@
 
       // Simpan data pengguna ke localStorage
       localStorage.setItem('userData', JSON.stringify({ email, password }));
-      localStorage.setItem('isLoggedIn', 'false'); // Tandai bahwa pengguna belum login
-
       alert("Sign Up successful!");
-      window.location.href = 'sudah login.html'; // Arahkan ke halaman sudah login setelah sign-up berhasil
+      
+      // Setelah Sign Up, kembali ke halaman Sign In
+      formTitle.textContent = "Sign In";
+      submitBtn.textContent = "Sign In";
+      authForm.reset();
+      submitBtn.removeEventListener("click", handleSignup);
+      submitBtn.addEventListener("click", handleSignin);
+
+      document.querySelector(".link p").innerHTML = "Don't have an account? <a href='#' id='switch-to-signup'>Sign Up</a>";
     }
 
     // Fungsi untuk proses Sign In
