@@ -4,121 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sign Up / Sign In</title>
-  <style>
-    /* Reset dasar */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #87cefa, #ff0000, #ffeb3b); /* Gradient Biru Muda, Merah, Kuning */
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-      color: #333;
-    }
-
-    .container {
-      width: 350px;
-      background: white;
-      padding: 40px;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    h2 {
-      color: #333;
-      margin-bottom: 20px;
-      text-align: center;
-      font-size: 24px;
-      font-weight: bold;
-    }
-
-    .form-group {
-      margin-bottom: 20px;
-      width: 100%;
-    }
-
-    label {
-      font-size: 14px;
-      font-weight: bold;
-      color: #333;
-      margin-bottom: 8px;
-      display: block;
-    }
-
-    input {
-      width: 100%;
-      padding: 10px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-      font-size: 14px;
-      margin-top: 5px;
-    }
-
-    .btn {
-      width: 100%;
-      padding: 12px;
-      background-color: #ff7f00;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 16px;
-      font-weight: bold;
-      transition: background-color 0.3s;
-    }
-
-    .btn:hover {
-      background-color: #ff6600;
-    }
-
-    .link {
-      text-align: center;
-      margin-top: 20px;
-    }
-
-    .link p {
-      font-weight: bold;
-      font-size: 14px;
-      color: #333;
-    }
-
-    .link a {
-      color: #ff7f00; /* Warna mencolok untuk 'Sign In' */
-      font-size: 16px;
-      text-decoration: none;
-      font-weight: bold;
-      transition: color 0.3s;
-    }
-
-    /* Efek hover pada 'Sign In' */
-    .link a:hover {
-      color: #ff6600;
-    }
-
-    .message {
-      font-size: 14px;
-      color: #ff3333;
-      margin-top: 10px;
-    }
-
-    /* Responsif untuk layar kecil */
-    @media (max-width: 400px) {
-      .container {
-        width: 90%;
-        padding: 30px;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="login.css"> <!-- Memanggil file CSS terpisah -->
 </head>
 <body>
 
@@ -151,13 +37,15 @@
     // Cek jika data pengguna sudah ada di localStorage
     const userData = JSON.parse(localStorage.getItem('userData')) || { email: '', password: '' };
 
+    // Fungsi untuk pindah ke Sign In
     switchToSignin.addEventListener("click", (e) => {
       e.preventDefault();
       formTitle.textContent = "Sign In";
       submitBtn.textContent = "Sign In";
       authForm.reset();
-      submitBtn.addEventListener("click", handleSignin);
       submitBtn.removeEventListener("click", handleSignup);
+      submitBtn.addEventListener("click", handleSignin);
+
       // Ganti teks ke Sign Up
       document.querySelector(".link p").innerHTML = "Don't have an account? <a href='#' id='switch-to-signup'>Sign Up</a>";
       const switchToSignup = document.getElementById("switch-to-signup");
@@ -168,11 +56,13 @@
         authForm.reset();
         submitBtn.addEventListener("click", handleSignup);
         submitBtn.removeEventListener("click", handleSignin);
+
         // Ganti teks kembali ke Sign In
         document.querySelector(".link p").innerHTML = "Already have an account? <a href='#' id='switch-to-signin'>Sign In</a>";
       });
     });
 
+    // Fungsi untuk proses Sign Up
     function handleSignup(event) {
       event.preventDefault();
       const email = document.getElementById("email").value;
@@ -185,6 +75,7 @@
       switchToSignin.click();
     }
 
+    // Fungsi untuk proses Sign In
     function handleSignin(event) {
       event.preventDefault();
       const email = document.getElementById("email").value;
@@ -193,15 +84,15 @@
       // Pastikan email dan password yang dimasukkan cocok dengan data yang disimpan
       if (email === userData.email && password === userData.password) {
         alert("Sign In successful!");
-        window.location.href = 'index.html'; // Arahkan ke index.html setelah login berhasil
+        window.location.href = 'sudah login.html'; // Arahkan ke halaman sudah login.html setelah login berhasil
       } else {
         alert("Invalid email or password. Please try again.");
       }
     }
 
+    // Set event listener untuk handle signup
     submitBtn.addEventListener("click", handleSignup);
   </script>
 
 </body>
-  </html>
-  
+</html>
