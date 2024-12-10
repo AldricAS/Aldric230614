@@ -4,7 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sign Up / Sign In</title>
-  <link rel="stylesheet" href="login.css"> <meta name="google-signin-client_id" content="YOUR_CLIENT_ID"> <script src="https://apis.google.com/js/platform.js" async defer></script>
+  <link rel="stylesheet" href="login.css"> <!-- Memanggil file CSS terpisah -->
+
+  <!-- Memasukkan Google Sign-In API -->
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
 </head>
 <body>
 
@@ -25,8 +28,10 @@
 
     <div class="link">
       <p>Already have an account? <a href="#" id="switch-to-signin">Sign In</a></p>
-      <div id="g_id_signin" class="g-signin2" data-onsuccess="onSignIn"></div>
     </div>
+
+    <!-- Tombol Google Sign-In -->
+    <div class="g-signin2" data-onsuccess="onSignIn" style="margin-top: 20px;"></div>
   </div>
 
   <script>
@@ -91,4 +96,31 @@
       }
     }
 
-    // Fungsi untuk proses login dengan
+    // Fungsi Google Sign-In Callback
+    function onSignIn(googleUser) {
+      var profile = googleUser.getBasicProfile();
+      var email = profile.getEmail();
+      var id = profile.getId();
+      
+      // Menyimpan status login dengan akun Google
+      localStorage.setItem('userData', JSON.stringify({ email, password: id })); // Menggunakan ID sebagai password sementara
+      localStorage.setItem('isLoggedIn', 'true'); // Tandai bahwa pengguna sudah login
+
+      alert("Google Sign-In successful!");
+      window.location.href = 'sudah login.html'; // Arahkan ke halaman sudah login setelah login berhasil
+    }
+
+    // Set event listener untuk handle signup
+    submitBtn.addEventListener("click", handleSignup);
+  </script>
+
+  <!-- Mengonfigurasi Client ID untuk Google Sign-In -->
+  <script>
+    gapi.load('auth2', function() {
+      gapi.auth2.init({
+        client_id: '569269369702-br90p14feinv2qiiu3sa5t6d3qg7sb3r.apps.googleusercontent.com'
+      });
+    });
+  </script>
+</body>
+</html>
